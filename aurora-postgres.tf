@@ -47,19 +47,19 @@ resource "aws_security_group" "aurora_sg" {
 resource "aws_subnet" "aurora_subnet_1" {
   vpc_id            = "vpc-05ed0e14e65d479e1"  # Substitua pelo seu VPC ID
   availability_zone = "us-east-1a"
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = "172.31.16.0/20"
 }
 
 resource "aws_subnet" "aurora_subnet_2" {
   vpc_id            = "vpc-05ed0e14e65d479e1"
   availability_zone = "us-east-1b"
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = "172.31.32.0/20"
 }
 
 resource "aws_subnet" "aurora_subnet_3" {
   vpc_id            = "vpc-05ed0e14e65d479e1"
   availability_zone = "us-east-1c"
-  cidr_block        = "10.0.3.0/24"
+  cidr_block        = "172.31.0.0/20"
 }
 
 resource "aws_db_subnet_group" "aurora_subnet_group" {
