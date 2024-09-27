@@ -7,7 +7,7 @@ provider "aws" {
   region  = "us-east-1"
 }
 resource "aws_rds_cluster" "postgresql" {
-  cluster_identifier      = "aurora-cluster-demo"
+  cluster_identifier      = "aurora-cluster-food"
   engine                  = "aurora-postgresql"
   availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
   database_name           = "food"
@@ -20,7 +20,7 @@ resource "aws_rds_cluster" "postgresql" {
 
 resource "aws_rds_cluster_instance" "aurora_instance" {
   count              = 1
-  identifier         = "aurora-instance-demo"
+  identifier         = "aurora-cluster-food"
   cluster_identifier = aws_rds_cluster.postgresql.id
   instance_class     = "db.r5.large"
   engine             = "aurora-postgresql"
