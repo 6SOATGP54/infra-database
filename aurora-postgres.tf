@@ -1,8 +1,3 @@
-variable "aws_region" {
-  description = "AWS Region"
-  type        = string
-  default     = "us-east-1"  # Substitua pela região que você deseja usar
-}
 provider "aws" {
   region  = "us-east-1"
 }
@@ -16,10 +11,11 @@ resource "aws_rds_cluster" "postgresql" {
   backup_retention_period = 5
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
+  db_subnet_group_name    = aws_db_subnet_group.aurora_subnet_group.name
 }
 
 resource "aws_rds_cluster_instance" "aurora_instance" {
-  count              = 1
+  count              = 2
   identifier         = "aurora-cluster-food-instance"
   cluster_identifier = aws_rds_cluster.postgresql.id
   instance_class     = "db.r5.large"
