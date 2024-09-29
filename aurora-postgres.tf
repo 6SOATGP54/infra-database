@@ -1,6 +1,45 @@
 provider "aws" {
-  region  = "us-east-1"
+  region     = "us-east-1"
 }
+
+# Buscar a VPC dinamicamente pelo nome
+data "aws_vpc" "selected_vpc" {
+  filter {
+    name   = "tag:Name"
+    values = ["eks-cluster-vpc"]  # Substitua pelo nome da sua VPC
+  }
+}
+
+# Subnets criadas dinamicamente a partir do bloco CIDR da VPC
+resource "aws_subnet" "aurora_subnet_1" {
+  vpc_id            = data.aws_vpc.selected_vpc.id
+  availability_zone = "us-east-1a"
+  cidr_block        = "10.0.176.0/20"  # Calcula o bloco CIDR para a subnet 1
+}
+
+resource "aws_subnet" "aurora_subnet_2" {
+  vpc_id            = data.aws_vpc.selected_vpc.id
+  availability_zone = "us-east-1b"
+  cidr_block        = "10.0.208.0/20" # Calcula o bloco CIDR para a subnet 2
+}
+
+resource "aws_subnet" "aurora_subnet_3" {
+  vpc_id            = data.aws_vpc.selected_vpc.id
+  availability_zone = "us-east-1c"
+  cidr_block        = "10.0.192.0/20"  # Calcula o bloco CIDR para a subnet 3
+}
+
+# Grupo de subnets do Aurora RDS
+resource "aws_db_subnet_group" "aurora_subnet_group" {
+  name       = "aurora-subnet-group"
+  subnet_ids = [
+    aws_subnet.aurora_subnet_1.id,
+    aws_subnet.aurora_subnet_2.id,
+    aws_subnet.aurora_subnet_3.id
+  ]
+}
+
+# Cluster Aurora PostgreSQL
 resource "aws_rds_cluster" "postgresql" {
   cluster_identifier      = "aurora-cluster-food"
   engine                  = "aurora-postgresql"
@@ -14,6 +53,7 @@ resource "aws_rds_cluster" "postgresql" {
   db_subnet_group_name    = aws_db_subnet_group.aurora_subnet_group.name
 }
 
+# Instâncias do Aurora PostgreSQL
 resource "aws_rds_cluster_instance" "aurora_instance" {
   count              = 2
   identifier         = "aurora-cluster-food-instance"
@@ -22,6 +62,7 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   engine             = "aurora-postgresql"
 }
 
+# Grupo de segurança
 resource "aws_security_group" "aurora_sg" {
   name = "aurora-sg"
 
@@ -38,31 +79,4 @@ resource "aws_security_group" "aurora_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-resource "aws_subnet" "aurora_subnet_1" {
-  vpc_id            = "vpc-03c6154f4e1300691"  # Substitua pelo seu VPC ID
-  availability_zone = "us-east-1a"
-  cidr_block        = "172.31.128.0/20"
-}
-
-resource "aws_subnet" "aurora_subnet_2" {
-  vpc_id            = "vpc-03c6154f4e1300691"
-  availability_zone = "us-east-1b"
-  cidr_block        = "172.31.144.0/20"
-}
-
-resource "aws_subnet" "aurora_subnet_3" {
-  vpc_id            = "vpc-03c6154f4e1300691"
-  availability_zone = "us-east-1c"
-  cidr_block        = "172.31.160.0/20"
-}
-
-resource "aws_db_subnet_group" "aurora_subnet_group" {
-  name       = "aurora-subnet-group"
-  subnet_ids = [
-    aws_subnet.aurora_subnet_1.id,
-    aws_subnet.aurora_subnet_2.id,
-    aws_subnet.aurora_subnet_3.id
-  ]
 }
