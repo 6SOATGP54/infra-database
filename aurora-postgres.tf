@@ -14,19 +14,31 @@ data "aws_vpc" "selected_vpc" {
 resource "aws_subnet" "aurora_subnet_1" {
   vpc_id            = data.aws_vpc.selected_vpc.id
   availability_zone = "us-east-1a"
+<<<<<<< HEAD
   cidr_block        = "10.0.176.0/20"  # Calcula o bloco CIDR para a subnet 1
+=======
+  cidr_block        = "10.0.64.0/20"  # Calcula o bloco CIDR para a subnet 1
+>>>>>>> e7dd6bedf63c100513472c7111d9e7df5753ad91
 }
 
 resource "aws_subnet" "aurora_subnet_2" {
   vpc_id            = data.aws_vpc.selected_vpc.id
   availability_zone = "us-east-1b"
+<<<<<<< HEAD
   cidr_block        = "10.0.208.0/20" # Calcula o bloco CIDR para a subnet 2
+=======
+  cidr_block        = "10.0.96.0/20" # Calcula o bloco CIDR para a subnet 2
+>>>>>>> e7dd6bedf63c100513472c7111d9e7df5753ad91
 }
 
 resource "aws_subnet" "aurora_subnet_3" {
   vpc_id            = data.aws_vpc.selected_vpc.id
   availability_zone = "us-east-1c"
+<<<<<<< HEAD
   cidr_block        = "10.0.192.0/20"  # Calcula o bloco CIDR para a subnet 3
+=======
+  cidr_block        = "10.0.128.0/20"  # Calcula o bloco CIDR para a subnet 3
+>>>>>>> e7dd6bedf63c100513472c7111d9e7df5753ad91
 }
 
 # Grupo de subnets do Aurora RDS
