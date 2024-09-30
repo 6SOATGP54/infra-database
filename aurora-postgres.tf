@@ -1,12 +1,12 @@
 provider "aws" {
-  region     = "us-east-1"
+  region = "us-east-1"
 }
 
 # Buscar a VPC dinamicamente pelo nome
 data "aws_vpc" "selected_vpc" {
   filter {
     name   = "tag:Name"
-    values = ["eks-cluster-vpc"]  # Substitua pelo nome da sua VPC
+    values = ["eks-cluster-vpc"] # Substitua pelo nome da sua VPC
   }
 }
 
@@ -14,7 +14,7 @@ data "aws_vpc" "selected_vpc" {
 resource "aws_subnet" "aurora_subnet_1" {
   vpc_id            = data.aws_vpc.selected_vpc.id
   availability_zone = "us-east-1a"
-  cidr_block        = "10.0.176.0/20"  # Calcula o bloco CIDR para a subnet 1
+  cidr_block        = "10.0.176.0/20" # Calcula o bloco CIDR para a subnet 1
 }
 
 resource "aws_subnet" "aurora_subnet_2" {
@@ -26,12 +26,12 @@ resource "aws_subnet" "aurora_subnet_2" {
 resource "aws_subnet" "aurora_subnet_3" {
   vpc_id            = data.aws_vpc.selected_vpc.id
   availability_zone = "us-east-1c"
-  cidr_block        = "10.0.192.0/20"  # Calcula o bloco CIDR para a subnet 3
+  cidr_block        = "10.0.192.0/20" # Calcula o bloco CIDR para a subnet 3
 }
 
 # Grupo de subnets do Aurora RDS
 resource "aws_db_subnet_group" "aurora_subnet_group" {
-  name       = "aurora-subnet-group"
+  name = "aurora-subnet-group"
   subnet_ids = [
     aws_subnet.aurora_subnet_1.id,
     aws_subnet.aurora_subnet_2.id,
