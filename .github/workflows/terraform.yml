@@ -1,48 +1,54 @@
-name: 'Terraform'
+# name: 'Terraform'
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+####################################################################
+######### Deploy automático desabilitado temporariamente   #########
+######### para evolução do trabalho com o tech-challenge-4 #########
+#########            (evitar custos com a AWS)             #########
+####################################################################
 
-permissions:
-  contents: read
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
 
-jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: us-east-1
+# permissions:
+#   contents: read
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
+# jobs:
+#   terraform:
+#     name: 'Terraform'
+#     runs-on: ubuntu-latest
+#     environment: production
+#     env:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       aws-region: us-east-1
 
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v4
+#     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+#     defaults:
+#       run:
+#         shell: bash
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.4.0
+#     steps:
+#     # Checkout the repository to the GitHub Actions runner
+#     - name: Checkout
+#       uses: actions/checkout@v4
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
+#     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         terraform_version: 1.4.0
 
-    - name: Terraform Validate
-      run: terraform validate
+#     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#     - name: Terraform Init
+#       run: terraform init
+
+#     - name: Terraform Validate
+#       run: terraform validate
    
-    - name: Terraform Plan
-      run: terraform plan -out=tfplan
+#     - name: Terraform Plan
+#       run: terraform plan -out=tfplan
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve tfplan
+#     - name: Terraform Apply
+#       run: terraform apply -auto-approve tfplan
