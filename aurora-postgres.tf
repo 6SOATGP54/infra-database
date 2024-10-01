@@ -56,7 +56,7 @@ resource "aws_rds_cluster" "postgresql" {
 # Instâncias do Aurora PostgreSQL
 resource "aws_rds_cluster_instance" "aurora_instance" {
   count              = 2
-  identifier         = "aurora-cluster-food-instance"
+  identifier         = "aurora-cluster-food-instance-${count.index}"
   cluster_identifier = aws_rds_cluster.postgresql.id
   instance_class     = "db.r5.large"
   engine             = "aurora-postgresql"
