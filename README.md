@@ -1,4 +1,4 @@
-# infra-database <img src="./docs/imgs/terraform-icon.png" width="25"></img>
+# infra-database - Fase 4 <img src="./docs/imgs/terraform-icon.png" width="25"></img>
 Infraestrutura de banco de dados com Terraform para o Sistema de controle para pedidos de autoatendimento em lanchonete integrado à API de pagamento do Mercado Pago.
 
 <p align="center">
