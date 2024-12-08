@@ -31,7 +31,7 @@ resource "aws_subnet" "aurora_subnet_3" {
 
 # Grupo de subnets do Aurora RDS
 resource "aws_db_subnet_group" "aurora_subnet_group" {
-  name = "aurora-subnet-group"
+  name       = "aurora-subnet-group"
   subnet_ids = [
     aws_subnet.aurora_subnet_1.id,
     aws_subnet.aurora_subnet_2.id,
@@ -46,7 +46,7 @@ resource "aws_rds_cluster" "postgresql" {
   availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
   database_name           = "food"
   master_username         = "food"
-  master_password         = "mV3&04I}Pt"
+  master_password         = "mV304IPt"
   backup_retention_period = 5
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
@@ -60,11 +60,13 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   cluster_identifier = aws_rds_cluster.postgresql.id
   instance_class     = "db.r5.large"
   engine             = "aurora-postgresql"
+  publicly_accessible = true
 }
 
 # Grupo de segurança
 resource "aws_security_group" "aurora_sg" {
-  name = "aurora-sg"
+  name   = "aurora-sg"
+  vpc_id = data.aws_vpc.selected_vpc.id  # Associar o SG à VPC correta
 
   ingress {
     from_port   = 5432
